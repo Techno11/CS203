@@ -84,6 +84,7 @@ public class IterativeRepair_try2 {
             swapPerformed = false;
             for(int qa = 0; qa < n - 1; qa++) {
                 for(int qb = qa + 1; qb < n; qb++) {
+                    basicOpCnt++;
                     numCollisions = calculateCollisionsQaQb(board, qa, qb);
                     // Check if Queens are being attacked
                     if(numCollisions > 0) {
@@ -94,6 +95,7 @@ public class IterativeRepair_try2 {
                         if (newNumCollisions < numCollisions) {
                             swapPerformed = true;
                             board = swapped;
+                            // basicOpCnt++;
                         }
                     }
                 }
@@ -175,8 +177,8 @@ public class IterativeRepair_try2 {
             _  _  x  _  x  _
             _  x  _  _  _  x
             To count the diagonal, we start at the location that is passed in.
-            Firstly, we start by checking the diagonals going right and up and going right and down.
             Ex. Column 5
+            Firstly, we start by checking the diagonals going right and up and going right and down.
             We get the queen height at our column, which is 4.
             Next, we will go to column 6, and check if there is a queen at height 3 or height 5.
             Then, we will go to column 5 and check if there is a queen at height 2 or 6... etc.
@@ -187,19 +189,17 @@ public class IterativeRepair_try2 {
         final int queenHeight = board[col];
         // diagonals going right
         for (int i = col + 1, j = 1; i < board.length; i++, j++) {
-            // Diagonal Down as queen || Diagonal Up has Queen
+            // Diagonal Down is within board constraints and has queen OR Diagonal Up is within board constraints and has queen
             if ((queenHeight + j < board.length && board[i] == queenHeight + j) || (queenHeight - j >= 0 && board[i] == queenHeight - j)) {
                 count++;
-                basicOpCnt++;
             }
         }
 
         // diagonals going left
         for (int i = col - 1, j = 1; i >= 0; i--, j++) {
-            // Diagonal Down as queen || Diagonal Up has Queen
+            // Diagonal Down is within board constraints and has queen OR Diagonal Up is within board constraints and has queen
             if ((queenHeight + j < board.length && board[i] == queenHeight + j) || ( queenHeight - j >= 0 && board[i] == queenHeight - j)) {
                 count++;
-                basicOpCnt++;
             }
         }
         return count;
