@@ -1,4 +1,4 @@
-package edu.kettering.zais5275.cs203;
+package edu.kettering.zais5275.cs203.Assignment1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
