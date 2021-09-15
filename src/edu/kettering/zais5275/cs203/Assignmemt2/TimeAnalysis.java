@@ -14,16 +14,19 @@ public class TimeAnalysis {
 
     private static Point[] sortedX;
     private static Point[] sortedY;
+    static long basicOpCount = 0;
 
     public static void main(String[] args) {
-        for(int i = 1; i < 40; i++) {
+        for(int i = 2; i < 40; i++) {
+            basicOpCount = 0;
             int n = (int)Math.pow(2, i);
             generateRandomPoints(n);                        // Setup Graph
             long startTime = System.nanoTime();             // Record Start Time
             PointPair score = divAndConq(sortedX, sortedY); // Divide and Conquer
             // Stats Outputs
             // System.out.print("Solved " + n + " points in " + (System.nanoTime() - startTime) + " nano seconds, closest points were ");
-            System.out.println(n + "	" + (System.nanoTime() - startTime));
+            // System.out.println(n + "	" + (System.nanoTime() - startTime));
+            System.out.println(basicOpCount);
             // System.out.print("(" + score.p1.x + ", " + score.p1.y + ") and ");
             // System.out.println("(" + score.p2.x + ", " + score.p2.y + ") with a distance of " + score.distance + " units.");
             // System.out.println("A new window has launched with a visualization of this output!");
@@ -51,6 +54,7 @@ public class TimeAnalysis {
 
             // Split Xs in half and set storage locations
             for(int i = 0; i < fullSortedX.length; i++) {
+                basicOpCount++;
                 if(i < midpoint) {                                          // Place in x-left array, and set storage location to x-left
                     fullSortedX[i].storageLocation = StorageLocation.Left;
                     xLeft[i] = fullSortedX[i];
@@ -64,6 +68,7 @@ public class TimeAnalysis {
             int yLeftLoc = 0;
             int yRightLoc = 0;
             for(Point p : fullSortedY) {
+                basicOpCount++;
                 if(p.storageLocation == StorageLocation.Left) {             // if storage location is left, store in y left
                     yLeft[yLeftLoc] = p;
                     yLeftLoc++;
@@ -97,6 +102,8 @@ public class TimeAnalysis {
             // Locate Closest Points
             for(int i = 0; i < s.size() - 2; i++) {
                 for (int k = i+1; k < s.size() && Math.pow(s.get(k).y - s.get(i).y, 2) < leastDistanceSq.distance; k++) {
+
+                    basicOpCount++;
                     // calculate distance
                     double dist = distance(s.get(k), s.get(i));
                     // if distance is smaller, update min
